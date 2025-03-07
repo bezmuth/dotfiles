@@ -27,6 +27,12 @@ exec /usr/libexec/xdg-desktop-portal-wlr
 exec /usr/libexec/xdg-desktop-portal-gnome
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 
+assign [app_id="thunderbird"] workspace number 10
+exec thunderbird
+assign [app_id="ch.proton.bridge-gui"] workspace number 10
+exec /var/lib/flatpak/exports/bin/ch.protonmail.protonmail-bridge --no-window
+exec nextcloud
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
