@@ -51,3 +51,4 @@
 ;; (package! "mvn")
 (package! chezmoi)
 (package! elfeed-protocol)
+(package! mastodon)

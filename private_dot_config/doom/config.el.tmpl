@@ -1,3 +1,4 @@
+;;; -*- mode: emacs-lisp; -*-
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -148,3 +149,24 @@
 
 (map! :leader
       "n r p" #'capture-post)
+
+(setq mastodon-instance-url "https://social.bezmuth.uk")  ;; Set your instance URL
+(setq mastodon-active-user "bezmuth")  ;; Set your Mastodon username
+
+(progn
+
+  ;; set font for emoji
+  ;; if before emacs 28, this should come after setting symbols, because emacs 28 now has 'emoji . before, emoji is part of 'symbol
+
+  (set-fontset-font
+   t
+   (if (< emacs-major-version 28)
+       '(#x1f300 . #x1fad0)
+     'emoji
+     )
+   (cond
+    ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+    ((member "Noto Emoji" (font-family-list)) "Noto Emoji"))))
+
+(display-time)
+(display-battery-mode)
