@@ -17,28 +17,30 @@ set $right l
 set $term alacritty -e fish
 # Your preferred application launcher
 set $menu rofi -show drun
-
-exec /usr/libexec/pipewire-launcher &
-exec waybar &
-exec blueman-applet &
-exec --no-startup-id kwalletd6 &
-exec --no-startup-id /usr/lib/xfce4/xfce-polkit &
-for_window [app_id="xfce-polkit"] floating enable
+exec /usr/libexec/xdg-desktop-portal
 exec /usr/libexec/xdg-desktop-portal-gtk
 exec /usr/libexec/xdg-desktop-portal-wlr
-exec /usr/libexec/xdg-desktop-portal-gnome
+# needed for mako
+exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus 
+exec pipewire
+exec waybar
+exec blueman-applet &
+exec kwalletd6 &
+#for_window [app_id="xfce-polkit"] floating enable
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+exec hydroxide serve
+exec mako
 
-assign [app_id="thunderbird"] workspace number 10
+assign [app_id="Thunderbird"] workspace number 10
 exec thunderbird
-assign [app_id="ch.proton.bridge-gui"] workspace number 10
-exec /var/lib/flatpak/exports/bin/ch.protonmail.protonmail-bridge --no-window
+#assign [app_id="ch.proton.bridge-gui"] workspace number 10
 exec nextcloud
+exec kdeconnect --indicator &
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/bezmuth/Pictures/wallpaper.png fill
+#output * bg /home/bezmuth/Pictures/wallpaper.png fill
 #
 # Example configuration:
 #
