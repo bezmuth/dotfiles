@@ -22,6 +22,8 @@ exec /usr/libexec/pipewire-launcher &
 exec waybar &
 exec blueman-applet &
 exec --no-startup-id kwalletd6 &
+exec --no-startup-id /usr/lib/xfce4/xfce-polkit &
+for_window [app_id="xfce-polkit"] floating enable
 exec /usr/libexec/xdg-desktop-portal-gtk
 exec /usr/libexec/xdg-desktop-portal-wlr
 exec /usr/libexec/xdg-desktop-portal-gnome
@@ -36,7 +38,7 @@ exec nextcloud
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg /home/bezmuth/Pictures/wallpaper.png fill
 #
 # Example configuration:
 #
