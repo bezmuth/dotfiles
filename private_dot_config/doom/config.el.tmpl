@@ -110,7 +110,41 @@
    org-roam-capture-templates)
   )
 
+
 (use-package! org-noter
   :config
   (map! :map pdf-view-mode-map
         :nvi "i" #'org-noter-insert-note))
+
+;; elfeed-protocol
+(after! elfeed
+(setq elfeed-search-filter "@2-weeks-ago -Youtube")
+
+;; curl recommend
+(setq elfeed-use-curl t)
+(elfeed-set-timeout 36000)
+(setq elfeed-curl-extra-arguments '("--insecure")) ;necessary for https without a trust certificate
+
+;; setup feeds
+(setq elfeed-protocol-feeds '(("fever+https://bezmuth@miniflux.bezmuth.uk"
+			       :api-url "https://miniflux.bezmuth.uk/fever/"
+                               :password "{{ .miniflux.pass }}")))
+
+;; enable elfeed-protocol
+(setq elfeed-protocol-enabled-protocols '(fever newsblur owncloud ttrss))
+(elfeed-protocol-enable)
+(defun capture-post ()
+  (interactive)
+  (let ((elfeed-entry (setq elfeed-entry (buffer-local-value 'elfeed-show-entry (get-buffer "*elfeed-entry*")))))
+    (org-roam-capture-
+     :node (org-roam-node-create :title (elfeed-entry-title elfeed-entry))
+     :templates `(("d" "Default Template" plain "%?"
+                   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                      ,(format "${title}\n#+filetags: :links:%s:\n%s\n" (symbol-name (car (elfeed-entry-tags elfeed-entry))) (elfeed-entry-link elfeed-entry))) ;; Ensure `template-lines` is evaluated
+                   :unnarrowed t)))
+    )
+  )
+)
+
+(map! :leader
+      "n r p" #'capture-post)

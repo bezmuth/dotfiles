@@ -50,3 +50,4 @@
 ;; (unpin! t)
 ;; (package! "mvn")
 (package! chezmoi)
+(package! elfeed-protocol)

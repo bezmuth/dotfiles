@@ -20,23 +20,26 @@ set $menu rofi -show drun
 exec /usr/libexec/xdg-desktop-portal
 exec /usr/libexec/xdg-desktop-portal-gtk
 exec /usr/libexec/xdg-desktop-portal-wlr
-# needed for mako
-exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus 
+# needed for mako, maybe not?
+#exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus 
 exec pipewire
 exec waybar
 exec blueman-applet &
+exec nm-applet &
 exec kwalletd6 &
 #for_window [app_id="xfce-polkit"] floating enable
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
-exec hydroxide serve
 exec mako
 
 assign [app_id="Thunderbird"] workspace number 10
 exec thunderbird
-#assign [app_id="ch.proton.bridge-gui"] workspace number 10
-exec nextcloud
-exec kdeconnect --indicator &
-
+assign [app_id="ch.proton.bridge-gui"] workspace number 10
+exec /var/lib/flatpak/exports/bin/ch.protonmail.protonmail-bridge --no-window
+exec kdeconnectd &
+exec sleep 5 && kdeconnect-indicator &
+exec sleep 5 && nextcloud 
+# im gonna open it anyway
+exec emacs 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
