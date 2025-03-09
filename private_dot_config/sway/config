@@ -21,7 +21,7 @@ exec /usr/libexec/xdg-desktop-portal
 exec /usr/libexec/xdg-desktop-portal-gtk
 exec /usr/libexec/xdg-desktop-portal-wlr
 # needed for mako, maybe not?
-#exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus 
+#exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
 exec pipewire
 exec waybar
 exec blueman-applet &
@@ -35,15 +35,17 @@ exec_always autotiling
 assign [app_id="Thunderbird"] workspace number 10
 exec thunderbird
 assign [app_id="ch.proton.bridge-gui"] workspace number 10
-exec protonmail-bridge --cli &
+exec sleep 10 && protonmail-bridge-gui &
 exec kdeconnectd &
 exec sleep 5 && kdeconnect-indicator &
-exec sleep 5 && nextcloud 
+exec sleep 5 && nextcloud
 # im gonna open it anyway
-exec emacs 
+exec emacs
 
 seat seat0 hide_cursor 5000
 bindsym $mod+End exec swaylock -c 000000
+
+output DP-2 scale 1.5
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
