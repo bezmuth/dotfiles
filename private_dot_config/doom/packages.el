@@ -52,3 +52,4 @@
 (package! chezmoi)
 (package! elfeed-protocol)
 (package! mastodon)
+(package! w3m)

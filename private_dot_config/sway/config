@@ -30,6 +30,7 @@ exec kwalletd6 &
 #for_window [app_id="xfce-polkit"] floating enable
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 exec mako
+exec bash /home/bezmuth/start_ssh_agent.sh
 
 assign [app_id="Thunderbird"] workspace number 10
 exec thunderbird
@@ -40,6 +41,8 @@ exec sleep 5 && kdeconnect-indicator &
 exec sleep 5 && nextcloud 
 # im gonna open it anyway
 exec emacs 
+
+seat seat0 hide_cursor 5000
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)

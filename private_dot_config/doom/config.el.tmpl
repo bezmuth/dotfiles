@@ -152,7 +152,7 @@
 
 (setq mastodon-instance-url "https://social.bezmuth.uk")  ;; Set your instance URL
 (setq mastodon-active-user "bezmuth")  ;; Set your Mastodon username
-
+(setq mastodon-tl--show-avatars t)
 (progn
 
   ;; set font for emoji
@@ -170,3 +170,10 @@
 
 (display-time)
 (display-battery-mode)
+(require 'mastodon-async)
+(after! mastodon
+  (map! :map mastodon-mode-map
+      :n "mm" (lambda ()
+                  (interactive)
+                  (mastodon-tl--more)))
+)
