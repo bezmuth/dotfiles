@@ -35,7 +35,7 @@ exec_always autotiling
 assign [app_id="Thunderbird"] workspace number 10
 exec thunderbird
 assign [app_id="ch.proton.bridge-gui"] workspace number 10
-exec sleep 10 && protonmail-bridge-gui &
+exec sleep 5 && protonmail-bridge --grpc &
 exec kdeconnectd &
 exec sleep 5 && kdeconnect-indicator &
 exec sleep 5 && nextcloud
@@ -46,6 +46,10 @@ seat seat0 hide_cursor 5000
 bindsym $mod+End exec swaylock -c 000000
 
 output DP-2 scale 1.5
+
+bindsym $mod+p exec playerctl previous
+bindsym $mod+bracketleft exec playerctl play-pause
+bindsym $mod+bracketright exec playerctl next
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -86,6 +90,10 @@ output DP-2 scale 1.5
 
 input * {
 	xkb_layout "gb"
+}
+
+input "12815:20571:Evision_RGB_Keyboard" {
+	xkb_layout "us"
 }
 
 ### Key bindings
