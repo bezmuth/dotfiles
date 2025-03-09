@@ -30,12 +30,12 @@ exec kwalletd6 &
 #for_window [app_id="xfce-polkit"] floating enable
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 exec mako
-exec bash /home/bezmuth/start_ssh_agent.sh
+exec_always autotiling
 
 assign [app_id="Thunderbird"] workspace number 10
 exec thunderbird
 assign [app_id="ch.proton.bridge-gui"] workspace number 10
-exec /var/lib/flatpak/exports/bin/ch.protonmail.protonmail-bridge --no-window
+exec protonmail-bridge --cli &
 exec kdeconnectd &
 exec sleep 5 && kdeconnect-indicator &
 exec sleep 5 && nextcloud 
@@ -43,6 +43,7 @@ exec sleep 5 && nextcloud
 exec emacs 
 
 seat seat0 hide_cursor 5000
+bindsym $mod+End exec swaylock -c 000000
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -58,10 +59,10 @@ seat seat0 hide_cursor 5000
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+ exec swayidle -w \
+          timeout 300 'swaylock -f -c 000000' \
+          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+          before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when

@@ -35,7 +35,7 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
-(set-face-attribute 'default nil :font "Iosevka" :height 120 :weight 'bold)
+(setq doom-font (font-spec :family "Iosevka" :size 20 :weight 'bold))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -134,21 +134,49 @@
 ;; enable elfeed-protocol
 (setq elfeed-protocol-enabled-protocols '(fever newsblur owncloud ttrss))
 (elfeed-protocol-enable)
-(defun capture-post ()
-  (interactive)
-  (let ((elfeed-entry (setq elfeed-entry (buffer-local-value 'elfeed-show-entry (get-buffer "*elfeed-entry*")))))
-    (org-roam-capture-
-     :node (org-roam-node-create :title (elfeed-entry-title elfeed-entry))
-     :templates `(("d" "Default Template" plain "%?"
-                   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                      ,(format "${title}\n#+filetags: :links:%s:\n%s\n" (symbol-name (car (elfeed-entry-tags elfeed-entry))) (elfeed-entry-link elfeed-entry))) ;; Ensure `template-lines` is evaluated
-                   :unnarrowed t)))
-    )
-  )
 )
 
-(map! :leader
-      "n r p" #'capture-post)
+
+(defun capture-post-w3m ()
+  (interactive)
+  (let* ((buffer (get-buffer "*w3m*"))
+         (url (buffer-local-value 'w3m-current-url buffer))
+         (title (buffer-local-value 'w3m-current-title buffer)))
+    (org-roam-capture-
+     :node (org-roam-node-create :title title)
+     :templates
+     `(("d" "Default Template" plain "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                          ,(format "${title}\n#+filetags: :links:\n%s\n" url))
+        :unnarrowed t)))))
+
+
+(defun capture-post-elfeed ()
+  (interactive)
+  (let* ((buffer (get-buffer "*elfeed-entry*"))
+         (elfeed-entry (buffer-local-value 'elfeed-show-entry buffer)))
+    (org-roam-capture-
+     :node (org-roam-node-create :title (elfeed-entry-title elfeed-entry))
+     :templates
+     `(("d" "Default Template" plain "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                          ,(format "${title}\n#+filetags: :links:%s:\n%s\n"
+                                   (symbol-name (car (elfeed-entry-tags elfeed-entry)))
+                                   (elfeed-entry-link elfeed-entry)))
+        :unnarrowed t)))))
+
+(add-hook 'w3m-mode-hook
+          (lambda ()
+            (map! :leader
+                  :desc "Capture post from w3m"
+                  "n r p" #'capture-post-w3m)))
+
+(add-hook 'elfeed-show-mode-hook
+          (lambda ()
+            (map! :leader
+                  :desc "Capture post from Elfeed"
+                  "n r p" #'capture-post-elfeed)))
+
 
 (setq mastodon-instance-url "https://social.bezmuth.uk")  ;; Set your instance URL
 (setq mastodon-active-user "bezmuth")  ;; Set your Mastodon username
@@ -177,3 +205,12 @@
                   (interactive)
                   (mastodon-tl--more)))
 )
+
+
+(after! w3m
+  (setq w3m-search-default-engine "duckduckgo")
+  (setq w3m-display-mode 'plain)
+  (setq w3m-fill-column 80)
+  (setq w3m-display-image t)
+  )
+(setq browse-url-browser-function 'w3m-goto-url-new-session)
