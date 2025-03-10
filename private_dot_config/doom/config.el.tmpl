@@ -33,7 +33,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-opera-light)
 
 (setq doom-font (font-spec :family "Iosevka" :size 20 :weight 'bold))
 
@@ -119,7 +119,7 @@
 
 ;; elfeed-protocol
 (after! elfeed
-(setq elfeed-search-filter "@2-weeks-ago -Youtube")
+(setq elfeed-search-filter "@2-weeks-ago -Youtube -podcasts")
 
 ;; curl recommend
 (setq elfeed-use-curl t)
@@ -197,6 +197,8 @@
     ((member "Noto Emoji" (font-family-list)) "Noto Emoji"))))
 
 (setq display-time-24hr-format t)
+(after! doom-modeline
+  (setq doom-modeline-time-icon nil))
 (display-time)
 (display-battery-mode)
 (require 'mastodon-async)
