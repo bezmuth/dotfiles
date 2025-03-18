@@ -27,14 +27,11 @@ exec waybar
 exec blueman-applet &
 exec nm-applet &
 exec kwalletd6 &
-#for_window [app_id="xfce-polkit"] floating enable
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 exec mako
 exec_always autotiling
 
-assign [app_id="Thunderbird"] workspace number 10
 exec thunderbird
-assign [app_id="ch.proton.bridge-gui"] workspace number 10
 exec sleep 5 && protonmail-bridge --grpc &
 exec kdeconnectd &
 exec sleep 5 && kdeconnect-indicator &
@@ -46,10 +43,22 @@ seat seat0 hide_cursor 5000
 bindsym $mod+End exec swaylock -c 000000
 
 output DP-2 scale 1.5
+output HDMI-A-1 scale 1.5 pos 0 0
+output eDP-1 pos 320 1440
 
 bindsym $mod+p exec playerctl previous
 bindsym $mod+bracketleft exec playerctl play-pause
 bindsym $mod+bracketright exec playerctl next
+
+assign [app_id="de.haeckerfelix.Shortwave"] workspace number 9
+for_window [app_id="de.haeckerfelix.Shortwave"] resize set width 20 ppt
+for_window [app_id="de.haeckerfelix.Shortwave"] move right
+assign [app_id="spotify"] workspace number 9
+for_window [app_id="spotify"] resize set width 80 ppt
+for_window [app_id="spotify"] move left
+assign [app_id="Thunderbird"] workspace number 10
+assign [app_id="ch.proton.bridge-gui"] workspace number 10
+for_window [app_id="waydroid.*"] resize set width 576 px
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -89,11 +98,15 @@ bindsym $mod+bracketright exec playerctl next
 # Read `man 5 sway-input` for more information about this section.
 
 input * {
-	xkb_layout "gb"
+      xkb_layout "gb"
 }
 
 input "12815:20571:Evision_RGB_Keyboard" {
-	xkb_layout "us"
+      xkb_layout "us"
+}
+
+input type:touchpad {
+    dwt disabled
 }
 
 ### Key bindings
@@ -246,7 +259,7 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     # Special key to take a screenshot with grim
-    bindsym Print exec grim
+    bindsym Print exec slurp | grim -g - ~/Pictures/Screenshots/"$(date +%Y%m%d-%H%M%S)".png
 
 default_border pixel 1
 

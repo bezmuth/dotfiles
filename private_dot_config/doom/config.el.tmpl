@@ -119,7 +119,7 @@
 
 ;; elfeed-protocol
 (after! elfeed
-(setq elfeed-search-filter "@2-weeks-ago -Youtube -podcasts")
+(setq elfeed-search-filter "-Youtube -podcasts +unread")
 
 ;; curl recommend
 (setq elfeed-use-curl t)
@@ -128,7 +128,7 @@
 
 ;; setup feeds
 (setq elfeed-protocol-feeds '(("fever+https://bezmuth@miniflux.bezmuth.uk"
-			       :api-url "https://miniflux.bezmuth.uk/fever/"
+                               :api-url "https://miniflux.bezmuth.uk/fever/"
                                :password "{{ .miniflux.pass }}")))
 
 ;; enable elfeed-protocol
@@ -147,7 +147,7 @@
      :templates
      `(("d" "Default Template" plain "%?"
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                          ,(format "${title}\n#+filetags: :links:\n%s\n" url))
+                          ,(format "#+title: ${title}\n#+filetags: :links:\n%s\n" url))
         :unnarrowed t)))))
 
 
@@ -160,23 +160,22 @@
      :templates
      `(("d" "Default Template" plain "%?"
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                          ,(format "${title}\n#+filetags: :links:%s:\n%s\n"
+                          ,(format "#+title: ${title}\n#+filetags: :links:%s:\n%s\n"
                                    (symbol-name (car (elfeed-entry-tags elfeed-entry)))
                                    (elfeed-entry-link elfeed-entry)))
         :unnarrowed t)))))
 
-(add-hook 'w3m-mode-hook
-          (lambda ()
-            (map! :leader
-                  :desc "Capture post from w3m"
-                  "n r p" #'capture-post-w3m)))
+(map! :after w3m-mode
+      :map w3m-lynx-like-map
+      :leader
+      "n r p" #'capture-post-w3m)
 
-(add-hook 'elfeed-show-mode-hook
-          (lambda ()
-            (map! :leader
-                  :desc "Capture post from Elfeed"
-                  "n r p" #'capture-post-elfeed)))
+(map! :after elfeed
+      :map elfeed-show-mode-map
+      :leader "n r p" #'capture-post-elfeed)
 
+;; Press u inside a elfeed article to mark it as unread
+(evil-define-key 'normal elfeed-show-mode-map (kbd "u") 'elfeed-show-tag--unread)
 
 (setq mastodon-instance-url "https://social.bezmuth.uk")  ;; Set your instance URL
 (setq mastodon-active-user "bezmuth")  ;; Set your Mastodon username
