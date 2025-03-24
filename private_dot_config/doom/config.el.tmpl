@@ -165,7 +165,7 @@
                                    (elfeed-entry-link elfeed-entry)))
         :unnarrowed t)))))
 
-(map! :after w3m-mode
+(map! :after w3m
       :map w3m-lynx-like-map
       :leader
       "n r p" #'capture-post-w3m)

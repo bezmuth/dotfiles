@@ -5,3 +5,5 @@ if status is-interactive
     pfetch
 end
 set -g fish_greeting ""
+
+direnv hook fish | source
